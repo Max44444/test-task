@@ -22,7 +22,7 @@ public interface EmployeeDao extends CrudRepository<Employee, Long> {
             SELECT * FROM employee e
             WHERE salary = (
                 SELECT MAX(salary) FROM employee
-                JOIN department d on d.id = employee.department_id
+                JOIN department d ON d.id = employee.department_id
                 WHERE d.id = e.department_id
                 GROUP BY d.id
             )""",
@@ -30,8 +30,13 @@ public interface EmployeeDao extends CrudRepository<Employee, Long> {
     List<Employee> findAllByMaxSalary();
 
     //TODO Get a list of employees who do not have boss in the same department
-    @Query(
-            value = "",
+    @Query( value = """
+            SELECT * FROM employee e
+            WHERE boss_id NOT IN (
+                SELECT e2.id FROM employee e2
+                JOIN department d ON d.id = e2.department_id
+                WHERE d.id = e.department_id
+            )""",
             nativeQuery = true)
     List<Employee> findAllWithoutBoss();
 }
