@@ -19,8 +19,16 @@ public interface DepartmentDao extends CrudRepository<Department, Long> {
     List<Long> findAllWhereDepartmentDoesntExceedThreePeople();
 
     //TODO Get a list of departments IDs with the maximum total salary of employees
-    @Query(
-            value = "",
+    @Query( value = """
+            SELECT d.id FROM department d
+            JOIN employee e ON d.id = e.department_id
+            JOIN (
+                SELECT d2.id, SUM(e2.salary) AS total_salary FROM department d2
+                JOIN employee e2 ON d2.id = e2.department_id
+                GROUP BY d2.id
+            ) s ON s.id = d.id
+            GROUP BY d.id
+            HAVING SUM(e.salary) = MAX(s.total_salary)""",
             nativeQuery = true)
     List<Long> findAllByMaxTotalSalary();
 }
