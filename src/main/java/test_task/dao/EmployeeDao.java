@@ -11,8 +11,9 @@ import java.util.List;
 public interface EmployeeDao extends CrudRepository<Employee, Long> {
 
     //TODO Get a list of employees receiving a salary greater than that of the boss
-    @Query(
-            value = "",
+    @Query( value = """
+            SELECT * FROM employee e
+            WHERE salary > (SELECT salary FROM employee b WHERE b.id = e.boss_id);""",
             nativeQuery = true)
     List<Employee> findAllWhereSalaryGreaterThatBoss();
 
