@@ -65,10 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Long hireEmployee(Employee employee) {
-        //TODO Implement method using Collection and DAO
-        // ---write your code here
-
-
+        employeeDao.save(employee);
         return 0L;
     }
 }
