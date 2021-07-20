@@ -10,14 +10,12 @@ import java.util.List;
 @Repository
 public interface EmployeeDao extends CrudRepository<Employee, Long> {
 
-    //TODO Get a list of employees receiving a salary greater than that of the boss
     @Query( value =
             "SELECT * FROM employee e " +
             "WHERE salary > (SELECT salary FROM employee b WHERE b.id = e.boss_id)",
             nativeQuery = true)
     List<Employee> findAllWhereSalaryGreaterThatBoss();
 
-    //TODO Get a list of employees receiving the maximum salary in their department
     @Query( value =
             "SELECT * FROM employee e " +
             "WHERE salary = (" +
@@ -27,7 +25,6 @@ public interface EmployeeDao extends CrudRepository<Employee, Long> {
             nativeQuery = true)
     List<Employee> findAllByMaxSalary();
 
-    //TODO Get a list of employees who do not have boss in the same department
     @Query( value =
             "SELECT * FROM employee e " +
             "WHERE boss_id IS NULL OR boss_id NOT IN (" +

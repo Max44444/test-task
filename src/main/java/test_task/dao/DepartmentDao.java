@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface DepartmentDao extends CrudRepository<Department, Long> {
-    //TODO Get a list of department IDS where the number of employees doesn't exceed 3 people
     @Query( value =
             "SELECT d.id FROM department d " +
             "JOIN employee e ON d.id = e.department_id " +
@@ -18,7 +17,6 @@ public interface DepartmentDao extends CrudRepository<Department, Long> {
             nativeQuery = true)
     List<Long> findAllWhereDepartmentDoesntExceedThreePeople();
 
-    //TODO Get a list of departments IDs with the maximum total salary of employees
     @Query( value =
             "SELECT id FROM (" +
                     "SELECT d.id, rank() OVER (ORDER BY SUM(e.salary) DESC) AS rank " +
