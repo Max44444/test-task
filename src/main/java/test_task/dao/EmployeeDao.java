@@ -18,8 +18,14 @@ public interface EmployeeDao extends CrudRepository<Employee, Long> {
     List<Employee> findAllWhereSalaryGreaterThatBoss();
 
     //TODO Get a list of employees receiving the maximum salary in their department
-    @Query(
-            value = "",
+    @Query( value = """
+            SELECT * FROM employee e
+            WHERE salary = (
+                SELECT MAX(salary) FROM employee
+                JOIN department d on d.id = employee.department_id
+                WHERE d.id = e.department_id
+                GROUP BY d.id
+            )""",
             nativeQuery = true)
     List<Employee> findAllByMaxSalary();
 
