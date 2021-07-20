@@ -6,6 +6,7 @@ import test_task.dao.EmployeeDao;
 import test_task.model.Employee;
 import test_task.service.EmployeeService;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,10 +50,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long changeSalary(String name) {
         Iterable<Employee> employees = employeeDao.findAll();
 
-        //TODO Implement method using Collection
-        // ---write your code here
+        //how should the salary change?
+        BigDecimal increaseSalaryLevel = new BigDecimal(1000);
 
-
+        employees.forEach(employee -> {
+            if (employee.getName().equals(name)) {
+                employee.setSalary(employee.getSalary().add(increaseSalaryLevel));
+            }
+        });
 
         employeeDao.saveAll(employees);
         return 0L;
