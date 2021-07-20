@@ -6,6 +6,7 @@ import test_task.dao.EmployeeDao;
 import test_task.model.Employee;
 import test_task.service.EmployeeService;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -33,10 +34,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long fireEmployee(String name) {
         Iterable<Employee> employees = employeeDao.findAll();
 
-        //TODO Implement method using Collection
-        // ---write your code here
-
-
+        Iterator<Employee> iterator = employees.iterator();
+        while(iterator.hasNext()) {
+            if (iterator.next().getName().equals(name)) {
+                iterator.remove();
+            }
+        }
 
         employeeDao.saveAll(employees);
         return 0L;
